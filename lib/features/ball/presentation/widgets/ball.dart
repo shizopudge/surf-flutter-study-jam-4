@@ -2,10 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:surf_practice_magic_ball/core/services/adaptative.dart';
 
 import '../../../../core/constants/assets.dart';
 import '../../../../core/domain/entities/failure/failure.dart';
+import '../../../../core/services/adaptative.dart';
 import '../../../../core/services/internet_connection_check/internet_connection_check_cubit.dart';
 import '../../../../core/styles/colors.dart';
 import '../../domain/entities/ball_reading.dart';
@@ -30,7 +30,7 @@ class _BallState extends State<Ball> with TickerProviderStateMixin {
       AnimationController(
     vsync: this,
     duration: const Duration(
-      milliseconds: 3000,
+      milliseconds: 2500,
     ),
   )..repeat(
           reverse: true,
@@ -40,14 +40,14 @@ class _BallState extends State<Ball> with TickerProviderStateMixin {
       AnimationController(
     vsync: this,
     duration: const Duration(
-      milliseconds: 750,
+      milliseconds: 550,
     ),
   );
   late final AnimationController _animationShakeController =
       AnimationController(
     vsync: this,
     duration: const Duration(
-      milliseconds: 200,
+      milliseconds: 150,
     ),
   );
 
@@ -68,7 +68,7 @@ class _BallState extends State<Ball> with TickerProviderStateMixin {
     ),
     end: const Offset(
       0,
-      .015,
+      .012,
     ),
   ).animate(
     _animationShakeController,
@@ -118,7 +118,31 @@ class _BallState extends State<Ball> with TickerProviderStateMixin {
           child: Column(
             children: [
               if (internetState ==
-                  const InternetConnectionCheckState.connected())
+                  const InternetConnectionCheckState.disconnected())
+                Column(
+                  children: [
+                    const Icon(
+                      Icons.wifi_off_rounded,
+                      color: Pallete.white,
+                    ),
+                    SizedBox(
+                      height: Adaptive.setPadding(8),
+                    ),
+                    Text(
+                      'NO INTERNET CONNECTION',
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                            color: Pallete.white,
+                            fontSize: Adaptive.defaultTextSize,
+                          ),
+                    ),
+                    SizedBox(
+                      height: Adaptive.setPadding(20),
+                    ),
+                  ],
+                )
+              else
                 SlideTransition(
                   position: _animationFloating,
                   child: SlideTransition(
@@ -179,30 +203,6 @@ class _BallState extends State<Ball> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
-                )
-              else
-                Column(
-                  children: [
-                    const Icon(
-                      Icons.wifi_off_rounded,
-                      color: Pallete.white,
-                    ),
-                    SizedBox(
-                      height: Adaptive.setPadding(8),
-                    ),
-                    Text(
-                      'NO INTERNET CONNECTION',
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                            color: Pallete.white,
-                            fontSize: Adaptive.defaultTextSize,
-                          ),
-                    ),
-                    SizedBox(
-                      height: Adaptive.setPadding(20),
-                    ),
-                  ],
                 ),
               state.maybeWhen(
                 failure: (_) => Image.asset(

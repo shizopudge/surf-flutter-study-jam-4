@@ -23,18 +23,18 @@ class InternetConnectionCheckCubit extends Cubit<InternetConnectionCheckState> {
       if (connectivityResult == InternetStatus.connected) {
         emit(const InternetConnectionCheckState.connected());
       } else {
-        emit(const InternetConnectionCheckState.disconnected());
+        await Future.delayed(const Duration(
+          milliseconds: 3000,
+        ));
+        final InternetStatus internetStatus =
+            await _internetConnection.internetStatus;
+        if (internetStatus == InternetStatus.disconnected) {
+          emit(const InternetConnectionCheckState.disconnected());
+        } else {
+          emit(const InternetConnectionCheckState.connected());
+        }
       }
     });
-  }
-
-  void checkInternetConnection() async {
-    final bool connectivityResult = await _internetConnection.hasInternetAccess;
-    if (connectivityResult) {
-      emit(const InternetConnectionCheckState.connected());
-    } else {
-      emit(const InternetConnectionCheckState.disconnected());
-    }
   }
 
   @override

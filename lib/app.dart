@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:surf_practice_magic_ball/core/services/get_it.dart';
 
 import 'core/services/adaptative.dart';
+import 'core/services/get_it.dart';
 import 'core/services/internet_connection_check/internet_connection_check_cubit.dart';
 import 'core/services/router.dart';
 
@@ -15,8 +15,7 @@ class App extends StatelessWidget {
     Adaptive.init(context);
     return BlocProvider(
       create: (context) => InternetConnectionCheckCubit(
-          internetConnection: getIt<InternetConnection>())
-        ..checkInternetConnection(),
+          internetConnection: getIt<InternetConnection>()),
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(

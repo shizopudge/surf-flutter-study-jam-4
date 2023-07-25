@@ -8,6 +8,7 @@ class BallInstructions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Adaptive.init(context);
     if (Adaptive.deviceType.isMobile) {
       return Text(
         'Нажмите на шар\nили потрясите телефон',
