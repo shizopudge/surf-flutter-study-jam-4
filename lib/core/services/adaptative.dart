@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../enums/device_type.dart';
@@ -26,13 +27,13 @@ class Adaptive {
   }
 
   static DeviceType _getDeviceType() {
+    if (kIsWeb) {
+      return DeviceType.desktop;
+    }
     if (Platform.isAndroid || Platform.isIOS && isHandset) {
       return DeviceType.mobile;
     }
-    if (Platform.isAndroid || Platform.isIOS && isTablet) {
-      return DeviceType.tablet;
-    }
-    return DeviceType.desktop;
+    return DeviceType.tablet;
   }
 
   static bool get isHandset => screenWidth! < 600;
@@ -42,4 +43,10 @@ class Adaptive {
   static bool get isDesktop => screenWidth! > 900;
 
   static DeviceType get deviceType => _getDeviceType();
+
+  static double get defaultTextSize => isHandset
+      ? blockSizeHorizontal! * 4.5
+      : isTablet
+          ? blockSizeHorizontal! * 3.5
+          : blockSizeHorizontal! * 2;
 }

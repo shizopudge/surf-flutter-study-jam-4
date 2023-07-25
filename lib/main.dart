@@ -12,7 +12,7 @@ void bootstrap() async {
   await setup();
   runApp(
     DevicePreview(
-      enabled: false,
+      enabled: !kReleaseMode,
       builder: (context) => const App(),
     ),
   );

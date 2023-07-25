@@ -1,18 +1,24 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:surf_practice_magic_ball/core/services/adaptative.dart';
 
 import '../../../../core/constants/assets.dart';
 import '../../../../core/domain/entities/failure/failure.dart';
-import '../../../../core/services/adaptative.dart';
+import '../../../../core/services/internet_connection_check/internet_connection_check_cubit.dart';
 import '../../../../core/styles/colors.dart';
 import '../../domain/entities/ball_reading.dart';
 import '../bloc/ball_bloc.dart';
+import 'ball_shadow.dart';
 
 class Ball extends StatefulWidget {
   final VoidCallback onTap;
+  final double height;
   const Ball({
     Key? key,
     required this.onTap,
+    required this.height,
   }) : super(key: key);
 
   @override
@@ -26,7 +32,10 @@ class _BallState extends State<Ball> with TickerProviderStateMixin {
     duration: const Duration(
       milliseconds: 3000,
     ),
-  )..repeat(reverse: true);
+  )..repeat(
+          reverse: true,
+        );
+
   late final AnimationController _animationOpacityController =
       AnimationController(
     vsync: this,
@@ -36,26 +45,39 @@ class _BallState extends State<Ball> with TickerProviderStateMixin {
   );
   late final AnimationController _animationShakeController =
       AnimationController(
-          vsync: this, duration: const Duration(milliseconds: 100));
+    vsync: this,
+    duration: const Duration(
+      milliseconds: 200,
+    ),
+  );
+
   late final Animation<Offset> _animationFloating = Tween(
     begin: Offset.zero,
     end: const Offset(
       0,
       0.05,
     ),
-  ).animate(_animationFloatingController);
+  ).animate(
+    _animationFloatingController,
+  );
+
   late final Animation<Offset> _animationShake = Tween(
     begin: const Offset(
-      -.015,
       0,
+      -0.08,
     ),
     end: const Offset(
-      .015,
       0,
+      .015,
     ),
-  ).animate(_animationShakeController);
+  ).animate(
+    _animationShakeController,
+  );
+
   late final Animation<double> _animationOpacity =
-      Tween(begin: 0.0, end: 1.0).animate(_animationOpacityController);
+      Tween(begin: 0.0, end: 1.0).animate(
+    _animationOpacityController,
+  );
 
   @override
   void dispose() {
@@ -67,6 +89,7 @@ class _BallState extends State<Ball> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final internetState = context.watch<InternetConnectionCheckCubit>().state;
     return BlocConsumer<BallBloc, BallState>(
       listener: (context, state) => state.maybeWhen(
         loading: () {
@@ -75,7 +98,9 @@ class _BallState extends State<Ball> with TickerProviderStateMixin {
           return null;
         },
         failure: (_) {
-          _animationShakeController.stop();
+          _animationShakeController
+            ..reset()
+            ..stop();
           _animationOpacityController.forward();
           return null;
         },
@@ -92,119 +117,103 @@ class _BallState extends State<Ball> with TickerProviderStateMixin {
           onTap: widget.onTap,
           child: Column(
             children: [
-              SlideTransition(
-                position: _animationFloating,
-                child: SlideTransition(
-                  position: _animationShake,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Image(
-                        height: Adaptive.isHandset
-                            ? Adaptive.screenWidth!
-                            : Adaptive.isTablet
-                                ? Adaptive.screenWidth! * .8
-                                : Adaptive.screenWidth! * .5,
-                        width: Adaptive.isHandset
-                            ? Adaptive.screenWidth!
-                            : Adaptive.isTablet
-                                ? Adaptive.screenWidth! * .8
-                                : Adaptive.screenWidth! * .5,
-                        image: const AssetImage(
-                          Assets.ball,
+              if (internetState ==
+                  const InternetConnectionCheckState.connected())
+                SlideTransition(
+                  position: _animationFloating,
+                  child: SlideTransition(
+                    position: _animationShake,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Image(
+                          height: widget.height,
+                          fit: BoxFit.cover,
+                          image: const AssetImage(
+                            Assets.ball,
+                          ),
                         ),
-                      ),
-                      state.maybeWhen(
-                        loading: () => FadeTransition(
-                          opacity: _animationOpacity,
-                          child: Container(
-                            height: Adaptive.isHandset
-                                ? Adaptive.screenWidth! * .7
-                                : Adaptive.isTablet
-                                    ? Adaptive.screenWidth! * .8
-                                    : Adaptive.screenWidth! * .5,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Pallete.black.withOpacity(.75),
-                                  blurRadius: 27,
-                                  spreadRadius: 8,
-                                )
-                              ],
+                        state.maybeWhen(
+                          loading: () => FadeTransition(
+                            opacity: _animationOpacity,
+                            child: BallShadow(height: widget.height * .7),
+                          ),
+                          loaded: (BallReading ballReading) => BallShadow(
+                            height: widget.height * .7,
+                            padding: EdgeInsets.all(
+                              widget.height * .18,
                             ),
-                          ),
-                        ),
-                        loaded: (BallReading ballReading) => Container(
-                          height: Adaptive.isHandset
-                              ? Adaptive.screenWidth! * .7
-                              : Adaptive.isTablet
-                                  ? Adaptive.screenWidth! * .8
-                                  : Adaptive.screenWidth! * .5,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Pallete.black.withOpacity(.75),
-                                blurRadius: 27,
-                                spreadRadius: 8,
-                              )
-                            ],
-                          ),
-                          padding: EdgeInsets.all(Adaptive.isHandset
-                              ? Adaptive.screenWidth! * .25
-                              : Adaptive.isTablet
-                                  ? Adaptive.screenWidth! * .2
-                                  : Adaptive.screenWidth! * .1),
-                          child: Center(
-                            child: FittedBox(
-                              child: Text(
-                                ballReading.reading,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .displayLarge
-                                    ?.copyWith(
-                                      color: Pallete.white,
+                            child: Center(
+                              child: FittedBox(
+                                child: TweenAnimationBuilder(
+                                  tween: Tween(begin: 15.0, end: 0.0),
+                                  duration: const Duration(milliseconds: 550),
+                                  builder: (context, value, child) =>
+                                      ImageFiltered(
+                                    imageFilter: ImageFilter.blur(
+                                        sigmaX: value, sigmaY: value),
+                                    child: Text(
+                                      ballReading.reading,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displayLarge
+                                          ?.copyWith(
+                                            color: Pallete.white,
+                                          ),
                                     ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        failure: (Failure failure) => FadeTransition(
-                          opacity: _animationOpacity,
-                          child: Container(
-                            height: Adaptive.isHandset
-                                ? Adaptive.screenWidth! * .7
-                                : Adaptive.isTablet
-                                    ? Adaptive.screenWidth! * .8
-                                    : Adaptive.screenWidth! * .5,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Pallete.red.withOpacity(.75),
-                                  blurRadius: 27,
-                                  spreadRadius: 8,
-                                )
-                              ],
+                          failure: (Failure failure) => FadeTransition(
+                            opacity: _animationOpacity,
+                            child: BallShadow(
+                              height: widget.height * .7,
+                              color: Pallete.red.withOpacity(.75),
                             ),
                           ),
+                          orElse: () => const SizedBox.shrink(),
                         ),
-                        orElse: () => const SizedBox.shrink(),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
+                )
+              else
+                Column(
+                  children: [
+                    const Icon(
+                      Icons.wifi_off_rounded,
+                      color: Pallete.white,
+                    ),
+                    SizedBox(
+                      height: Adaptive.setPadding(8),
+                    ),
+                    Text(
+                      'NO INTERNET CONNECTION',
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                            color: Pallete.white,
+                            fontSize: Adaptive.defaultTextSize,
+                          ),
+                    ),
+                    SizedBox(
+                      height: Adaptive.setPadding(20),
+                    ),
+                  ],
                 ),
-              ),
-              SizedBox(
-                height: Adaptive.setPadding(20),
-              ),
               state.maybeWhen(
                 failure: (_) => Image.asset(
                   Assets.shadowError,
+                  height: widget.height * .18,
+                  fit: BoxFit.cover,
                 ),
                 orElse: () => Image.asset(
                   Assets.shadowDefault,
+                  height: widget.height * .18,
+                  fit: BoxFit.cover,
                 ),
               ),
             ],

@@ -8,7 +8,12 @@ class DioClient {
       ..options.baseUrl = _baseUrl
       ..options.connectTimeout = _connectionTimeout
       ..options.receiveTimeout = _receiveTimeout
-      ..options.responseType = ResponseType.json;
+      ..options.responseType = ResponseType.json
+      ..options.headers.addAll({
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+        'Accept': '*/*'
+      });
   }
 
   static const _baseUrl = 'https://eightballapi.com/api';
