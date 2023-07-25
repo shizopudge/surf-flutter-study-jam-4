@@ -101,6 +101,9 @@ class _BallState extends State<Ball> with TickerProviderStateMixin {
           _animationShakeController
             ..reset()
             ..stop();
+          _animationOpacityController
+            ..reset()
+            ..stop();
           _animationOpacityController.forward();
           return null;
         },
@@ -121,9 +124,14 @@ class _BallState extends State<Ball> with TickerProviderStateMixin {
                   const InternetConnectionCheckState.disconnected())
                 Column(
                   children: [
-                    const Icon(
-                      Icons.wifi_off_rounded,
-                      color: Pallete.white,
+                    SizedBox(
+                      height: widget.height * .5,
+                      child: const FittedBox(
+                        child: Icon(
+                          Icons.wifi_off_rounded,
+                          color: Pallete.white,
+                        ),
+                      ),
                     ),
                     SizedBox(
                       height: Adaptive.setPadding(8),
@@ -204,18 +212,22 @@ class _BallState extends State<Ball> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
-              state.maybeWhen(
-                failure: (_) => Image.asset(
-                  Assets.shadowError,
-                  height: widget.height * .18,
-                  fit: BoxFit.cover,
+              if (internetState ==
+                  const InternetConnectionCheckState.disconnected())
+                const SizedBox.shrink()
+              else
+                state.maybeWhen(
+                  failure: (_) => Image.asset(
+                    Assets.shadowError,
+                    height: widget.height * .18,
+                    fit: BoxFit.cover,
+                  ),
+                  orElse: () => Image.asset(
+                    Assets.shadowDefault,
+                    height: widget.height * .18,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                orElse: () => Image.asset(
-                  Assets.shadowDefault,
-                  height: widget.height * .18,
-                  fit: BoxFit.cover,
-                ),
-              ),
             ],
           ),
         );
