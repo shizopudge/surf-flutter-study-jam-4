@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../../core/services/adaptative.dart';
 import '../../../../core/styles/colors.dart';
 
-class InstructionsText extends StatelessWidget {
-  const InstructionsText({super.key});
+class BallInstructions extends StatelessWidget {
+  const BallInstructions({super.key});
 
   @override
   Widget build(BuildContext context) {

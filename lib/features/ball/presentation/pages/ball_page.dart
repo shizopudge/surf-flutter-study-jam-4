@@ -1,27 +1,67 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:shake/shake.dart';
+import '../../../../core/constants/assets.dart';
+import '../../../../core/presentation/animations/fade_animation_y_down.dart';
 
 import '../../../../core/services/adaptative.dart';
-import '../../../../core/services/get_it.dart';
 import '../../../../core/styles/colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../domain/usecases/get_ball_reading.dart';
 
-import '../../data/repositories/ball_repository_impl.dart';
 import '../bloc/ball_bloc.dart';
 import '../widgets/ball.dart';
-import '../widgets/ball_shadow.dart';
-import '../widgets/instructions.dart';
+import '../widgets/ball_instructions.dart';
 
-class BallPage extends StatelessWidget {
+class BallPage extends StatefulWidget {
   const BallPage({super.key});
+
+  @override
+  State<BallPage> createState() => _BallPageState();
+}
+
+class _BallPageState extends State<BallPage> {
+  late final ShakeDetector _shakeDetector;
+  final AudioPlayer _audioPlayer = AudioPlayer();
+
+  @override
+  void initState() {
+    _shakeDetector = ShakeDetector.autoStart(
+      onPhoneShake: () =>
+          context.read<BallBloc>().add(const BallEvent.getBallReading()),
+      minimumShakeCount: 1,
+      shakeSlopTimeMS: 500,
+      shakeCountResetTime: 3000,
+      shakeThresholdGravity: 2.7,
+    );
+    super.initState();
+  }
+
+  @override
+  void deactivate() {
+    _shakeDetector.stopListening();
+    super.deactivate();
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     Adaptive.init(context);
-    return BlocProvider(
-      create: (context) => BallBloc(
-        getBallReading: GetBallReading(
-          getIt<BallRepositoryImpl>(),
+    return BlocListener<BallBloc, BallState>(
+      listener: (context, state) => state.whenOrNull(
+        failure: (_) => _audioPlayer.play(
+          AssetSource(
+            Assets.failureSound,
+          ),
+        ),
+        loaded: (_) => _audioPlayer.play(
+          AssetSource(
+            Assets.failureSound,
+          ),
         ),
       ),
       child: Scaffold(
@@ -43,23 +83,23 @@ class BallPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Ball(
-                key: const ValueKey<String>('ball'),
-                onTap: () => context.read<BallBloc>().add(
-                      const BallEvent.tapOnBall(),
-                    ),
+              FadeAnimationYDown(
+                delay: .4,
+                child: Ball(
+                  key: const ValueKey<String>('ball'),
+                  onTap: () => context.read<BallBloc>().add(
+                        const BallEvent.getBallReading(),
+                      ),
+                ),
               ),
               SizedBox(
                 height: Adaptive.setPadding(20),
               ),
-              const BallShadow(
-                key: ValueKey<String>('ball_shadow'),
-              ),
-              SizedBox(
-                height: Adaptive.setPadding(20),
-              ),
-              const InstructionsText(
-                key: ValueKey<String>('instruction_text'),
+              const FadeAnimationYDown(
+                delay: .5,
+                child: BallInstructions(
+                  key: ValueKey<String>('instruction_text'),
+                ),
               )
             ],
           ),

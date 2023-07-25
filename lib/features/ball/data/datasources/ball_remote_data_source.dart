@@ -1,7 +1,6 @@
+import '../../../../core/domain/entities/failure/failure.dart';
 import '../../../../core/services/dio.dart';
 import '../models/ball_response/ball_reading_model.dart';
-
-import '../../../../core/domain/entities/failure/failure.dart';
 
 abstract interface class BallRemoteDataSource {
   Future<BallReadingModel> getBallReading();

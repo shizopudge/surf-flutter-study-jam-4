@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+
 import '../../data/models/ball_response/ball_reading_model.dart';
 
 class BallReading extends Equatable {

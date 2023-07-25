@@ -1,11 +1,10 @@
 import 'package:dartz/dartz.dart';
+
 import '../../../../core/constants/type_defs.dart';
 import '../../../../core/domain/entities/failure/failure.dart';
-import '../datasources/ball_remote_data_source.dart';
-
 import '../../domain/entities/ball_reading.dart';
-
 import '../../domain/repositories/ball_repository.dart';
+import '../datasources/ball_remote_data_source.dart';
 
 class BallRepositoryImpl implements BallRepository {
   final BallRemoteDataSource remoteDataSource;

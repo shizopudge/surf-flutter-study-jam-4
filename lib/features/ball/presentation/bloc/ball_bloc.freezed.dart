@@ -18,33 +18,33 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$BallEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() tapOnBall,
+    required TResult Function() getBallReading,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? tapOnBall,
+    TResult? Function()? getBallReading,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? tapOnBall,
+    TResult Function()? getBallReading,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_TapOnBall value) tapOnBall,
+    required TResult Function(_GetBallReading value) getBallReading,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_TapOnBall value)? tapOnBall,
+    TResult? Function(_GetBallReading value)? getBallReading,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_TapOnBall value)? tapOnBall,
+    TResult Function(_GetBallReading value)? getBallReading,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -68,35 +68,35 @@ class _$BallEventCopyWithImpl<$Res, $Val extends BallEvent>
 }
 
 /// @nodoc
-abstract class _$$_TapOnBallCopyWith<$Res> {
-  factory _$$_TapOnBallCopyWith(
-          _$_TapOnBall value, $Res Function(_$_TapOnBall) then) =
-      __$$_TapOnBallCopyWithImpl<$Res>;
+abstract class _$$_GetBallReadingCopyWith<$Res> {
+  factory _$$_GetBallReadingCopyWith(
+          _$_GetBallReading value, $Res Function(_$_GetBallReading) then) =
+      __$$_GetBallReadingCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_TapOnBallCopyWithImpl<$Res>
-    extends _$BallEventCopyWithImpl<$Res, _$_TapOnBall>
-    implements _$$_TapOnBallCopyWith<$Res> {
-  __$$_TapOnBallCopyWithImpl(
-      _$_TapOnBall _value, $Res Function(_$_TapOnBall) _then)
+class __$$_GetBallReadingCopyWithImpl<$Res>
+    extends _$BallEventCopyWithImpl<$Res, _$_GetBallReading>
+    implements _$$_GetBallReadingCopyWith<$Res> {
+  __$$_GetBallReadingCopyWithImpl(
+      _$_GetBallReading _value, $Res Function(_$_GetBallReading) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_TapOnBall implements _TapOnBall {
-  const _$_TapOnBall();
+class _$_GetBallReading implements _GetBallReading {
+  const _$_GetBallReading();
 
   @override
   String toString() {
-    return 'BallEvent.tapOnBall()';
+    return 'BallEvent.getBallReading()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_TapOnBall);
+        (other.runtimeType == runtimeType && other is _$_GetBallReading);
   }
 
   @override
@@ -105,27 +105,27 @@ class _$_TapOnBall implements _TapOnBall {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() tapOnBall,
+    required TResult Function() getBallReading,
   }) {
-    return tapOnBall();
+    return getBallReading();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? tapOnBall,
+    TResult? Function()? getBallReading,
   }) {
-    return tapOnBall?.call();
+    return getBallReading?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? tapOnBall,
+    TResult Function()? getBallReading,
     required TResult orElse(),
   }) {
-    if (tapOnBall != null) {
-      return tapOnBall();
+    if (getBallReading != null) {
+      return getBallReading();
     }
     return orElse();
   }
@@ -133,34 +133,34 @@ class _$_TapOnBall implements _TapOnBall {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_TapOnBall value) tapOnBall,
+    required TResult Function(_GetBallReading value) getBallReading,
   }) {
-    return tapOnBall(this);
+    return getBallReading(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_TapOnBall value)? tapOnBall,
+    TResult? Function(_GetBallReading value)? getBallReading,
   }) {
-    return tapOnBall?.call(this);
+    return getBallReading?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_TapOnBall value)? tapOnBall,
+    TResult Function(_GetBallReading value)? getBallReading,
     required TResult orElse(),
   }) {
-    if (tapOnBall != null) {
-      return tapOnBall(this);
+    if (getBallReading != null) {
+      return getBallReading(this);
     }
     return orElse();
   }
 }
 
-abstract class _TapOnBall implements BallEvent {
-  const factory _TapOnBall() = _$_TapOnBall;
+abstract class _GetBallReading implements BallEvent {
+  const factory _GetBallReading() = _$_GetBallReading;
 }
 
 /// @nodoc
