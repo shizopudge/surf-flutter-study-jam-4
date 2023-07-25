@@ -22,10 +22,10 @@ ANDROID, WEB
 
 # Ссылки на демонстрацию работы/скриншоты
 
-<p align="center"><img src="assets/results/failure.jpg" alt="Error" width="300" height="300"></p>
+<p align="center"><img src="assets/results/failure.jpg" alt="Error"></p>
 
-<p align="center"><img src="assets/results/loading.jpg" alt="Loading" width="300" height="300"></p>
+<p align="center"><img src="assets/results/loading.jpg" alt="Loading"></p>
 
-<p align="center"><img src="assets/results/not_active.jpg" alt="Not Active" width="300" height="300"></p>
+<p align="center"><img src="assets/results/not_active.jpg" alt="Not Active"></p>
 
-<p align="center"><img src="assets/results/success.jpg" alt="Success" width="300" height="300"></p>
+<p align="center"><img src="assets/results/success.jpg" alt="Success"></p>
