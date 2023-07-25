@@ -1,25 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:surf_practice_magic_ball/screen/magic_ball_screen.dart';
+import 'package:url_strategy/url_strategy.dart';
 
-void main() async {
+import 'app.dart';
+import 'core/services/get_it.dart';
+
+void bootstrap() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  runApp(const MyApp());
+  setPathUrlStrategy();
+  await setup();
+  runApp(const App());
 }
 
-/// App,s main widget.
-class MyApp extends StatelessWidget {
-  /// Constructor for [MyApp].
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MagicBallScreen(),
-    );
-  }
-}
+void main() => bootstrap();
