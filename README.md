@@ -22,7 +22,7 @@ ANDROID, WEB
 
 # Ссылки на демонстрацию работы/скриншоты
 
-<p align="center"><img src="assets/results/error.jpg" alt="Error" width="300" height="300"></p>
+<p align="center"><img src="assets/results/failure.jpg" alt="Error" width="300" height="300"></p>
 
 <p align="center"><img src="assets/results/loading.jpg" alt="Loading" width="300" height="300"></p>
 
